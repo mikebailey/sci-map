@@ -4,10 +4,10 @@ data shape, so US states can be added as a third level alongside the
 collaborator-hosted Countries and Regions (GADM best) data.
 
 Inputs (committed):
-  data/us_states.csv           (user_country, friend_country, user_region, friend_region, scaled_sci)
-  data/us_states.geojson       (GADM 4.1 USA L1, properties {GID_1, NAME_1, HASC_1}).
+  docs/data/us_states.csv           (user_country, friend_country, user_region, friend_region, scaled_sci)
+  docs/data/us_states.geojson       (GADM 4.1 USA L1, properties {GID_1, NAME_1, HASC_1}).
                                Idempotent: if this file is missing AND
-                               data/geo/us_states.geojson already exists in the
+                               docs/data/geo/us_states.geojson already exists in the
                                public schema (its first feature has {id, country,
                                name}), the geojson rewrite step is skipped and
                                only the SCI JSONs + sources.json are regenerated.
@@ -17,9 +17,9 @@ EXCEPT the sources file is named `sources.json` not `_sources.json` — the
 underscore-prefixed name conflicts with Jekyll's default exclude filter on
 the personal-site mirror, and this file is bundled in our repo so we can
 pick a friendlier name; main.js looks for it via LEVELS.level1.sourcesPath):
-  data/geo/us_states.geojson           properties rewritten to {id, country, name}
-  data/sci/us_states/sources.json      ["USA.1_1", ...]
-  data/sci/us_states/<GID_1>.json      {friend_region: raw_scaled_sci, ...}
+  docs/data/geo/us_states.geojson           properties rewritten to {id, country, name}
+  docs/data/sci/us_states/sources.json      ["USA.1_1", ...]
+  docs/data/sci/us_states/<GID_1>.json      {friend_region: raw_scaled_sci, ...}
 
 Run from the repo root: python3 etl/build_us_states.py
 """
@@ -32,10 +32,10 @@ from collections import defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-CSV_IN = REPO / "data" / "us_states.csv"
-GEO_IN = REPO / "data" / "us_states.geojson"
-GEO_OUT = REPO / "data" / "geo" / "us_states.geojson"
-SCI_OUT = REPO / "data" / "sci" / "us_states"
+CSV_IN = REPO / "docs" / "data" / "us_states.csv"
+GEO_IN = REPO / "docs" / "data" / "us_states.geojson"
+GEO_OUT = REPO / "docs" / "data" / "geo" / "us_states.geojson"
+SCI_OUT = REPO / "docs" / "data" / "sci" / "us_states"
 
 
 def rewrite_geo() -> int:

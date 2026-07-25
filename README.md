@@ -115,7 +115,7 @@ The fastest way to look at the code, click around, or develop a PR. Nothing to s
 
 ```bash
 git clone https://github.com/mikebailey/sci-world-map.git
-cd sci-world-map
+cd sci-world-map/docs
 python3 -m http.server 4000
 # open http://localhost:4000
 ```
@@ -290,7 +290,7 @@ This is fine if you trust the canonical version; it gives you an identical insta
 ### Step 4: Test locally
 
 ```bash
-python3 -m http.server 4000
+python3 -m http.server 4000 --directory docs
 # open http://localhost:4000 — the World regions tab should now hit YOUR R2
 ```
 
@@ -307,14 +307,14 @@ The page is a static site. Any static host works (GitHub Pages, Cloudflare Pages
 
 ```bash
 gh repo create your-org/sci-map --public --source=. --remote=origin --push
-# Repo Settings → Pages → Source = "Deploy from a branch", Branch = main / root
+# Repo Settings → Pages → Source = "Deploy from a branch", Branch = main / docs
 # Custom domain: enter sci-map.yourdomain.com → "Save"
 # Add a CNAME DNS record at your registrar:
 #   sci-map.yourdomain.com → your-org.github.io
 # Wait ~1 min for DNS + Pages to settle, then visit https://sci-map.yourdomain.com
 ```
 
-The repo already includes a `.nojekyll` (so Pages doesn't try to Jekyll-process the JSON files) and a `CNAME` (which you'll edit to your domain). Don't forget to:
+The site payload lives in `docs/` — Pages serves only that folder, so repo-level files (README, CLAUDE.md, `etl/`, `bin/`) stay unpublished. `docs/` already includes a `.nojekyll` (so Pages doesn't try to Jekyll-process the JSON files) and a `CNAME` (which you'll edit to your domain). Don't forget to:
 
 - Add your final `https://sci-map.yourdomain.com` to **both** the Mapbox URL allowlist and the R2 CORS allowlist before going live.
 

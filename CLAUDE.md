@@ -16,10 +16,10 @@ small and concentrated.
 
 | Concern | Location |
 |---------|----------|
-| **Page code** | `index.html`, `css/style.css`, `js/main.js` — no build step, plain static. `js/main.js` carries a header comment listing every customization vs upstream. |
-| **Adopter-configurable values** | `js/config.js`. Only file a fork should need to edit. Loaded by index.html **before** main.js. |
-| **Bundled US-states data** | `data/geo/us_states.geojson` + `data/sci/us_states/<GID_1>.json` × 153 + `data/sci/us_states/sources.json`. Only level not fetched from the upstream collaborator deploy. |
-| **US-states ETL** | `etl/build_us_states.py` — converts `data/us_states.csv` (long form: `user_country,friend_country,user_region,friend_region,scaled_sci`) into the upstream per-source JSON shape. Idempotent: if `data/us_states.geojson` (the GADM4.1 input) has already been consumed, the geojson step is skipped and only the SCI JSONs + `sources.json` regenerate. |
+| **Page code** | `docs/index.html`, `docs/css/style.css`, `docs/js/main.js` — no build step, plain static. `docs/` is the GitHub Pages publishing root (Settings → Pages → main /docs), so ONLY the site payload is published; repo-level files (this file, `etl/`, `bin/`, README) stay off the web. `js/main.js` carries a header comment listing every customization vs upstream. |
+| **Adopter-configurable values** | `docs/js/config.js`. Only file a fork should need to edit. Loaded by index.html **before** main.js. |
+| **Bundled US-states data** | `docs/data/geo/us_states.geojson` + `docs/data/sci/us_states/<GID_1>.json` × 153 + `docs/data/sci/us_states/sources.json`. Only level not fetched from the upstream collaborator deploy. |
+| **US-states ETL** | `etl/build_us_states.py` — converts `docs/data/us_states.csv` (long form: `user_country,friend_country,user_region,friend_region,scaled_sci`) into the upstream per-source JSON shape. Idempotent: if `data/us_states.geojson` (the GADM4.1 input) has already been consumed, the geojson step is skipped and only the SCI JSONs + `sources.json` regenerate. |
 | **Countries + Regions (GADM best) data** | NOT in repo. Fetched live from `https://social-connectedness.org/data/...` (the collaborator's R-export pipeline). CORS open. |
 | **Legacy GADM2 ETL** | `etl/etl_v3.py` (DuckDB + orjson + multiprocess), `etl/_meta.json`, `etl/README.md`. Produced the per-source pre-binned JSONs at `r2:sci-data/gadm2_v2/*` that this app used to read. **Obsolete since the 2026-06-09 integration** — Regions data now comes from social-connectedness.org instead. Kept around for reference / quick fallback, but not exercised. |
 | **Cost-control kill switches** | `bin/disable-basemap.sh` / `bin/enable-basemap.sh`. Write `feature-flags.json` to R2 via rclone; index.html fetches the flag on each load and skips Mapbox when `disable_basemap: true`. Still active — Mapbox is the only remaining cost lever. |
@@ -57,7 +57,7 @@ canonical and `web/src/explore/`.
 
 ## Important invariants — do NOT break
 
-- **Mapbox token + R2 URLs live in `js/config.js` only.** `main.js` reads
+- **Mapbox token + R2 URLs live in `docs/js/config.js` only.** `main.js` reads
   `window.SCI_CONFIG.*`. Don't hardcode either in `main.js` even
   "temporarily"; the personal-site mirror depends on the split.
 - **`feature-flags.json` is read before `js/main.js` loads** (the inline
