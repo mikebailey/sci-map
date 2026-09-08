@@ -15,7 +15,7 @@ Interactive web map of Facebook's **Social Connectedness Index (SCI)** — the r
 This project has **nothing to mirror**: `data/` and `outputs/` hold no
 un-versioned files, so GitHub already holds the whole project. If that
 changes, pick a service in `.mirror` (see the rule in `~/.claude/CLAUDE.md`)
-and run `python ~/Projects/sync-mirror.py research/sci-map --push`.
+and run `uv run python ~/Projects/sync-mirror.py personal/websites/sci-world-map --push`.
 
 ## Contents
 
