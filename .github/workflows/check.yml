@@ -1,0 +1,21 @@
+name: Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: node --check docs/js/config.js
+      - run: node --check docs/js/main.js
+      - run: python3 -m py_compile etl/build_us_states.py etl/etl_v3.py
